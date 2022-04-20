@@ -1,5 +1,4 @@
-/* Pra compilar gcc opengl.c -o gl 
--Ifreeglut/include -Lfreeglut/lib -lGL -lglut */
+/* Pra compilar gcc opengl.c -o gl -Ifreeglut/include -Lfreeglut/lib -lGL -lglut */
 #include <GL/gl.h>
 #include <GL/glut.h> //Bliblioteca responsavel por iniciar o glut
 

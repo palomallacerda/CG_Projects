@@ -1,9 +1,13 @@
-
 #include <GL/gl.h>
 #include <GL/glut.h>
+#include <stdio.h>
 
+//Definição do tamanho e posição da tela
 #define WINDOW_WIDTH 550
 #define WINDOW_HEIGHT 480
+#define y_position 80
+#define x_position 80
+
 
 typedef struct Vertex
 {
@@ -30,8 +34,6 @@ void display(){
 	glBegin(GL_TRIANGLES);
 	Vertex v;
 	
-
-
 	for(i = 0;i < sizeof(vertices);i++)
 	{
 		v = vertices[i];
@@ -44,20 +46,72 @@ void display(){
 	// }
 	glEnd();
 
+	//Faz o desenho acontecer o mais rápido possível 
+	glFlush();
+	
 	//perguntar o swapBuffers
 	glutSwapBuffers();
 }
 
+
+// Função responsavel pela interação com o teclado
+
+void keyboard_setting(unsigned char key, int x, int y)
+{
+	printf("HEYHEY");
+	Vertex v;
+    switch (key) {
+            case 'A': 
+            case 'a':// muda a cor corrente para vermelho
+					for(int i = 0;i < sizeof(vertices);i++)
+					{
+						v = vertices[i];
+						glColor3f((1.0f), (0.0f), (0.0f));
+						glVertex3f(v.x, v.y, v.z);
+					}
+                    //  glColor3f(1.0f, 0.0f, 0.0f);
+                     break;
+            case 'S':
+            case 's':// muda a cor corrente para verde
+                    for(int i = 0;i < sizeof(vertices);i++)
+					{
+						v = vertices[i];
+						glColor3f((0.0f), (1.0f), (0.0f));
+						glVertex3f(v.x, v.y, v.z);
+					}
+                     break;
+            case 'D':
+            case 'd':// muda a cor corrente para azul
+                    for(int i = 0;i < sizeof(vertices);i++)
+					{
+						v = vertices[i];
+						glColor3f((0.0f), (0.0f), (1.0f));
+						glVertex3f(v.x, v.y, v.z);
+					}
+					 break;
+			case 27:
+				glColor3f(1.0f, 0.5f, 0.0f);
+				break;
+    }
+    glutPostRedisplay();
+}
+// ========================================================================
+	
 int main(int argc, char ** argv){
     glutInit(&argc, argv);
 
+	//GLUT DOUBLE/ GLUT SIMNGLE?
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
+	//inicialização da posição e tamanho da tela
+	glutInitWindowPosition(x_position, y_position);
     glutInitWindowSize(WINDOW_WIDTH , WINDOW_HEIGHT);
 	
     glutCreateWindow("My first Triangle");
 
+	glutKeyboardFunc(keyboard_setting);
     glutDisplayFunc(display);
+	
     glutMainLoop();
     return 0; 
 }
