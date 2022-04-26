@@ -58,40 +58,59 @@ void display(){
 
 void keyboard_setting(unsigned char key, int x, int y)
 {
-	printf("HEYHEY");
 	Vertex v;
     switch (key) {
             case 'A': 
             case 'a':// muda a cor corrente para vermelho
 					for(int i = 0;i < sizeof(vertices);i++)
 					{
-						v = vertices[i];
-						glColor3f((1.0f), (0.0f), (0.0f));
-						glVertex3f(v.x, v.y, v.z);
+						vertices[i].r = 1.0f;
+						vertices[i].g = 0.0f;
+						vertices[i].b = 0.0f;
+						
 					}
                     //  glColor3f(1.0f, 0.0f, 0.0f);
-                     break;
+                    break;
             case 'S':
             case 's':// muda a cor corrente para verde
-                    for(int i = 0;i < sizeof(vertices);i++)
-					{
-						v = vertices[i];
-						glColor3f((0.0f), (1.0f), (0.0f));
-						glVertex3f(v.x, v.y, v.z);
+                    for(int i = 0;i < sizeof(vertices);i++){
+						vertices[i].r = 0.0f;
+						vertices[i].g = 1.0f;
+						vertices[i].b = 0.0f;
 					}
-                     break;
+                    break;
             case 'D':
             case 'd':// muda a cor corrente para azul
                     for(int i = 0;i < sizeof(vertices);i++)
 					{
-						v = vertices[i];
-						glColor3f((0.0f), (0.0f), (1.0f));
-						glVertex3f(v.x, v.y, v.z);
+						vertices[i].r = 0.0f;
+						vertices[i].g = 0.0f;
+						vertices[i].b = 1.0f;
 					}
-					 break;
+					break;
 			case 27:
-				glColor3f(1.0f, 0.5f, 0.0f);
+				for(int i = 0; i < sizeof(vertices); i++){
+					if(i == 0)
+					{
+						vertices[i].r = 1.0f;
+						vertices[i].g = 0.0f;
+						vertices[i].b = 0.0f;
+					}
+					if(i == 1)
+					{
+						vertices[i].r = 0.0f;
+						vertices[i].g = 1.0f;
+						vertices[i].b = 0.0f;
+					}
+					if(i == 2)
+					{
+						vertices[i].r = 0.0f;
+						vertices[i].g = 0.0f;
+						vertices[i].b = 1.0f;
+					}	
+				}
 				break;
+	printf("HEYHEY");
     }
     glutPostRedisplay();
 }

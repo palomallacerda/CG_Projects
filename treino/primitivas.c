@@ -31,7 +31,6 @@ void display()
     // Seleciona a matriz ModelView e reseta todas as transformacoes   
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-   
     // Define a matriz View
     gluLookAt(cam_x, cam_y, cam_z, center_x, center_y, center_z, 0.0f, 1.0f, 0.0f);
     
