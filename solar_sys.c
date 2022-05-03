@@ -7,9 +7,10 @@
 #define WINDOW_HEIGHT 800
 
 // Angles around the earth
-static GLfloat velocidade;
+static GLfloat velocidade1, velocidade2, moon;
 static float flag1 = 0.0f;
 static float flag2 = 0.0f;
+static float flag3 = 0.0f;
 static GLfloat angle, fAspect;
 float cam_x, cam_y, cam_z;
 float center_x, center_y, center_z;
@@ -19,28 +20,27 @@ void keyboeard_setting(unsigned char key, int x, int y){
     switch (key){
 		case 'X':
         case 'x':
-            //Gira ao redor do eixo x
-			glTranslatef (5, 0 , 0);
-            glRotatef(velocidade, 5,0,0);
-            angle = flag2;
+            glRotatef(moon, 3,0, 0);
+            velocidade1 = flag1;
+            velocidade2 = flag2;
             break;
 		case 'Y':
         case 'y':
-            //Gira ao redor do eixo y
-			glTranslatef (0 ,5, 0);
-            glRotatef(angle, 0,5, 0);
-            velocidade = flag1;
+            //Gira ao redor do eixo x
+			glTranslatef (5, 0 , 0);
+            glRotatef(velocidade1, 5,0,0);
+            velocidade2 = flag2;
+            moon = flag3;
             break;
 		default:
-			//fecha o sistema
-			exit(0);
+            glRotatef(velocidade1, 0,5, 0);
+			// exit(0);
 			break;
     }
 
 	// EspecificaParametrosVisualizacao();
     glutPostRedisplay();
 }
-
 
 
 // Função usada para especificar o volume de visualização
@@ -70,7 +70,7 @@ void GerenciaMouse(int button, int state, int x, int y){
 		}
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {  // Zoom-out
-			if (velocidade <= 130) velocidade += 5;
+			if (angle <= 130) angle += 5;
 		}
 	EspecificaParametrosVisualizacao();
 	glutPostRedisplay();
@@ -100,58 +100,76 @@ void display(){
     // Translate the whole scene out and into view
     // This is the initial viewing transformation
     glTranslatef(0.0f, 0.0f, -100.0f);
-
+    glRotatef(0, 0,100, 360);
+    glPushMatrix();
     // Yellow sun
     glColor3ub(255, 255, 0);
-    glutSolidSphere(7.0f, 15, 15);
-    
-    // cor da terra
-    glColor3ub(0,0,255);
-    // Desenhando a terra
-	glTranslatef(50.0f, 0.0f, -50.0f);
-    glutSolidSphere(6.0f, 15, 15);
-    
+    // glScaled(2,2,2);s
+    glutSolidSphere(7.0f, 30, 30);
+    glPopMatrix();
+
     // Save viewing transformation
     glPushMatrix();
-    
     // Primeira lua 
     // Rotate by angle of the moon
-    glRotatef(velocidade, 0.0f, 1.0f, 0.0f);
+    glRotatef(velocidade2, 0.0f, 1.0f, 0.0f);
     // Translate out from origin to orbit distance
     glTranslatef(90.0f, 0.0f, 0.0f);
 
     // Restore the viewing transformation
     glPopMatrix();
     
-    // firt moon
+    // firt planet
     glPushMatrix();
-    glRotatef(45.0f, 0.0f, 0.0f, 2.0f);
-    glRotatef(angle, 0.0f, 1.0f, 0.0f);
+    glRotatef(180.0f, 0.0f, 0.0f, 50.0f);
+    glRotatef(velocidade1, 0.0f, 1.0f, 0.0f);
     glTranslatef(-30.0f, 0.0f, 0.0f);
-    glColor3ub(192,192,192);
-    glutSolidSphere(3.0f, 7.5f, 7.5f);
+    glColor3ub(0,0,255);
+    glutSolidSphere(3.0f, 15.5f, 15.5f);
     glPopMatrix();
 
-    // Second Moon
     glPushMatrix();
+    // Second planet
     glRotatef(360.0f, -45.0f, 0.0f, 2.0f);
-    glRotatef(velocidade, 0.0f, 1.0f, 0.0f);
-    glTranslatef(0.0f, 0.0f, 30.0f);
-    glColor3ub(192,192,192);
-    glutSolidSphere(3.0f, 7.5f, 7.5f);
-    glPopMatrix();  
+    glRotatef(velocidade1, 0.0f, 1.0f, 0.0f);
+    glTranslatef(10.0f, 0.0f, 30.0f);
+    glColor3ub(255,0,0);
+    glutSolidSphere(3.0f, 15.5f, 15.5f);
     
-    flag1 = velocidade;
-    flag2 = angle;
+    //Drawing moons
+    glColor3ub(192,192,192);
+    glRotatef(moon, 5.0f, 0.0f, 0.0f);
+    glTranslatef(5.0f, 1.0f, 10.0f);
+    glutSolidSphere(1.0f, 15, 15);
+
+    glColor3ub(235,192,192);
+    glRotatef(moon, 0.0f, 5.0f, 0.0f);
+    glTranslatef(5.0f, 5.0f, 5.0f);
+    glRotatef(45.0f, 0,0,0);
+
+    glutSolidSphere(1.0f,15,15);
+    glPopMatrix();
+
+    flag1 = velocidade1;
+    flag2 = velocidade2;
+    flag3 = moon;
     // 
     angle +=10.0f;
-    velocidade += 10.0f;
+    velocidade1 -= 10.0f;
+    velocidade2 += 10.0f;
+    moon += 4.0f;
+    
     if(angle > 360.0f) 
         angle = 0.0f;
 
-    if(velocidade > 360.0f)
-        velocidade = 0.0f;
+    if(velocidade1 <=0)
+        velocidade1 = 360.0f;
 
+    if(velocidade2 > 360.0f)
+        velocidade2 = 0.0f;
+
+    if(moon > 360.0f)
+        moon = 0.0f;
     // Show the image
     glutSwapBuffers();
 }
@@ -159,7 +177,9 @@ void starting (void){
     //definindo a cor e o angulo
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     angle= 45;
-    velocidade = 0;
+    velocidade1 = 360;
+    velocidade2 = 0;
+    moon = 0;
 	cam_z = 0.0f;
 	cam_y = 50.0f;
 	cam_x = 0.0f;
@@ -176,7 +196,7 @@ int main(int argc, char** argv){
 	glutCreateWindow("Paloma - Solar_System");
     starting();    
     glutKeyboardFunc(keyboeard_setting);
-    // glutMouseFunc(GerenciaMouse);
+    glutMouseFunc(GerenciaMouse);
     glutDisplayFunc(display);
     glutReshapeFunc(AlteraTamanhoJanela);
 
