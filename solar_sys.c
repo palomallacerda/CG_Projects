@@ -30,17 +30,17 @@ static coords moon;
 static coords moon2;
 
 void keyboard_planet(unsigned char key, int x, int y){
-    if(key == 'y' || key == 'Y'){
+    if(key == 'z' || key == 'Z'){
         example.x = 0.0f; 
         example.y = 1.0f;
         example.z = 0.0f;
           // Increment the angle of revolution
-        fElect1 += 10.0f;
+        fElect1 += 1.0f;
         if(fElect1 > 360.0f)
             fElect1 = 0.0f;
 
         // Increment the angle of revolution
-        fElect2 -= 10.0f;
+        fElect2 -= 1.0f;
         if(fElect2 == 0)
             fElect2 = 360.0f;
         // exit(0);
@@ -54,13 +54,44 @@ void keyboard_planet(unsigned char key, int x, int y){
             fElect3 = 0.0f;
 
         // ###################################
-        moon2.x = 5;
-        moon2.y = 5;
-        moon2.z = 0;
+        moon2.x = 0;
+        moon2.y = 1;
+        moon2.z = 1;
 
         fElect4 +=5.0f;
         if(fElect4 > 360.0f)
             fElect4 = 0.0f;
+    }
+    else if(key =='y' || key == 'Y'){
+        example.x = 0.0f; 
+        example.y = 1.0f;
+        example.z = 0.0f;
+          // Increment the angle of revolution
+        fElect1 += 1.0f;
+        if(fElect1 > 360.0f)
+            fElect1 = 0.0f;
+
+        // Increment the angle of revolution
+        fElect2 -= 1.0f;
+        if(fElect2 == 0)
+            fElect2 = 360.0f;
+
+        moon.x = 0; 
+        moon.y = 1;
+        moon.z = 0;
+        fElect3 += 5.0f;
+        if(fElect3 > 360.0f)
+            fElect3 = 0.0f;
+
+        // ###################################
+        moon2.x = 0;
+        moon2.y = 1;
+        moon2.z = 1;
+
+        fElect4 +=5.0f;
+        if(fElect4 > 360.0f)
+            fElect4 = 0.0f;
+        
     }
 
     //Atualiza a janela
@@ -87,12 +118,14 @@ void planet2(){
     //"Translation"
 	glRotatef(fElect3, moon.x, moon.y, moon.z);
 	
-	glTranslatef(20.0f, 0.0f, 0.1f);
+	glTranslatef(20.0f, 0.0f, 1.0f);
 	
 	glutSolidSphere(1, 200, 200);
 
     glPopMatrix();
     
+
+    //Second moon
     glPushMatrix();
     glColor3ub(192,192,192);
 
@@ -147,6 +180,7 @@ void display(){
     // Resetando a matriz de transformações
     glLoadIdentity();
 
+    //Definindo posicionamento da câmera
     gluLookAt(cam_x, cam_y, cam_z, center_x, center_y, center_z, 0.0f, 1.0f, 0.0f);
     
     sun();
@@ -167,7 +201,7 @@ int main(int argc, char** argv){
     glutKeyboardFunc(keyboard_planet);
 
     // Angulo de observação 
-    fov_y = 25.0f;
+    fov_y = 45.0f;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
@@ -181,10 +215,3 @@ int main(int argc, char** argv){
     return 0;
 }
 
-
-
-
-// Falar com o nti pra vê a possibilidade
-// Falar com o LCCV 
-// Laccan, Edge, lccv. 
-// Pensar em um artigo 
