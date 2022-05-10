@@ -24,7 +24,10 @@ typedef struct coords
 static GLfloat fElect1 = 50.0f;
 static GLfloat fElect2 = 360.0f;
 static GLfloat fElect3 = 0.0f;
+static GLfloat fElect4 = 45.0f;
 static coords example;
+static coords moon;
+static coords moon2;
 
 void keyboard_planet(unsigned char key, int x, int y){
     if(key == 'y' || key == 'Y'){
@@ -42,27 +45,34 @@ void keyboard_planet(unsigned char key, int x, int y){
             fElect2 = 360.0f;
         // exit(0);
     }
+    else if(key == 'x'|| key == 'X'){
+        moon.x = 0; 
+        moon.y = 1;
+        moon.z = 0;
+        fElect3 += 10.0f;
+        if(fElect3 > 360.0f)
+            fElect3 = 0.0f;
+
+        // ###################################
+        moon2.x = 5;
+        moon2.y = 5;
+        moon2.z = 0;
+
+        fElect4 +=5.0f;
+        if(fElect4 > 360.0f)
+            fElect4 = 0.0f;
+    }
 
     //Atualiza a janela
     glutPostRedisplay();
 }
 
-void moon(float x, float y, float z, float distance, float size, float rotationSpeed){
-	//"Translation"
-	glRotatef(rotationSpeed, x, y, z);
-	
-	glTranslatef(0.0f, 0.0f, distance);
-	//Local rotation
-	glRotatef(0.0f, 0.0f, 1.0f, 0.0f);
-	
-	glutSolidSphere(size, 200, 200);
-}
 
 void planet2(){
     // glPushMatri/x();
     // Second planet
     glColor3ub(255,0,0);
-    
+
     //Fazendo a rotação com o angulo setado no eixo y
     glRotatef(fElect2, example.x, example.y, example.z);
 
@@ -73,13 +83,26 @@ void planet2(){
 
     //Drawing moons
     glPushMatrix();
-    glColor3ub(192,192,192);
-    moon(0.0f, 1.0f, 0.0f, 20.0f, 1.0f, fElect2);
+    glColor3ub(255,244,255);
+    //"Translation"
+	glRotatef(fElect3, moon.x, moon.y, moon.z);
+	
+	glTranslatef(20.0f, 0.0f, 0.1f);
+	
+	glutSolidSphere(1, 200, 200);
+
     glPopMatrix();
     
     glPushMatrix();
     glColor3ub(192,192,192);
-    moon(1.0f, 0.0f, 0.0f, 10.0f, 1.0f, fElect2);
+
+    //"Translation"
+	glRotatef(fElect4, moon2.x, moon2.y, moon2.z);
+	
+	glTranslatef(10.0f, 0.0f, 0.0f);
+	
+	glutSolidSphere(1, 200, 200);
+
     glPopMatrix();
 
 }
